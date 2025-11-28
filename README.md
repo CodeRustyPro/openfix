@@ -24,14 +24,11 @@
 ### Installation
 
 ```bash
-# Clone repository
 git clone https://github.com/CodeRustyPro/openfix.git
 cd openfix
 
-# Install dependencies
 pip install -r requirements.txt
 
-# Configure API keys
 export GEMINI_API_KEY="your-gemini-api-key"
 export GITHUB_TOKEN="your-github-token"
 ```
@@ -249,4 +246,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Made with ❤️ by the OpenFix Team**
+**Made with ❤️ by CodeRustyPro**
