@@ -25,7 +25,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/openfix.git
+git clone https://github.com/CodeRustyPro/openfix.git
 cd openfix
 
 # Install dependencies
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: yourusername/openfix-action@v1
+      - uses: CodeRustyPro/openfix-action@v1
         with:
           gemini-api-key: \${{ secrets.GEMINI_API_KEY }}
           github-token: \${{ secrets.GITHUB_TOKEN }}
@@ -243,9 +243,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/openfix/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/openfix/discussions)
-- **Email**: support@openfix.dev
+- **Issues**: [GitHub Issues](https://github.com/CodeRustyPro/openfix/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/CodeRustyPro/openfix/discussions)
+- **Email**: devshah3@illinois.edu
 
 ---
 

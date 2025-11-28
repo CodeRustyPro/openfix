@@ -207,7 +207,7 @@ Built with:
 
 ```bash
 # Install
-git clone https://github.com/yourusername/openfix.git
+git clone https://github.com/CodeRustyPro/openfix.git
 cd openfix
 pip install -r requirements.txt
 

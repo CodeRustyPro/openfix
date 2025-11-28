@@ -69,13 +69,13 @@ I wanted to explore what's actually possible with AI code generation today – n
 ## Call to Action
 
 **Primary CTA:**
-"Try it out: `git clone https://github.com/yourusername/openfix.git` and run the sandbox generator to test safely."
+"Try it out: `git clone https://github.com/CodeRustyPro/openfix.git` and run the sandbox generator to test safely."
 
 **Secondary CTA:**
 "I'd love feedback on what types of issues it handles well (and poorly). Contributions welcome!"
 
 **Link:**
-https://github.com/yourusername/openfix
+https://github.com/CodeRustyPro/openfix
 
 ---
 

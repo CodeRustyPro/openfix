@@ -185,7 +185,7 @@ gh release create v0.1.0 \
 ```
 
 **Or manually:**
-1. Go to https://github.com/yourusername/openfix/releases/new
+1. Go to https://github.com/CodeRustyPro/openfix/releases/new
 2. Tag: `v0.1.0`
 3. Title: `OpenFix v0.1.0 - Initial Release`
 4. Description: Copy from `RELEASE_NOTES.md`
