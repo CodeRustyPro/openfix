@@ -40,11 +40,14 @@ data/*.db
 artifacts/*.json
 artifacts/*.patch
 reports/
+temp_repo/
+temp_index.html
 
 # Temporary
 *.tmp
 .DS_Store
 *.bak
+CLEANUP_PLAN.md
 
 # Git
 .git/

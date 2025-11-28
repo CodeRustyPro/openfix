@@ -9,8 +9,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from agents.solver.solver_agent import SolverAgent
-from infrastructure.database.db import Database
+from data.database import Database
 from infrastructure.utils.logging import setup_logger
+import yaml
 
 logger = setup_logger(__name__)
 
@@ -34,9 +35,18 @@ def main():
 
     db = None  # Initialize db to None
     try:
+        # Load config
+        with open(args.config, "r") as f:
+            config = yaml.safe_load(f)
+
         # Initialize database and agent
-        db = Database()
-        solver = SolverAgent(config_path=args.config, db=db)
+        db = Database("data/db/openfix.db")
+        solver = SolverAgent(config, db)
+        
+        # Override issue number in config if needed (though execute takes it from repo/issue)
+        # Actually solver.execute takes repo_url. But how does it know which issue?
+        # SolverAgent._select_issue uses config['issue_number'] if present.
+        solver.config['issue_number'] = args.issue
 
         # Execute pipeline
         result = solver.execute(repo_url=args.repo)
@@ -45,11 +55,11 @@ def main():
         logger.info("=" * 60)
         logger.info("OpenFix E2E Run Complete")
         logger.info("=" * 60)
-        logger.info(f"Run ID: {solver.run_id}")
+        logger.info(f"Run ID: {result.get('run_id')}")
 
-        validation_passed = result.get("validation_output", {}).get("passed", False)
+        validation_passed = result.get("validation_passed", False)
 
-        if result.get("success"):
+        if result.get("patch_generated"):
             logger.info(f"✓ Patch generated: {result['patch_path']}")
 
             if validation_passed:
@@ -57,15 +67,11 @@ def main():
             else:
                 logger.warning("✓ Validation: FAILED")
 
-            # Check if this is a success despite validation failure
-            if not validation_passed and result.get("patch_path"):
-                logger.warning("Warning: Patch generated but failed validation.")
-
             sys.exit(0)
         else:
             logger.error("✗ No patch generated")
-            if result.get("error"):
-                logger.error(f"Error: {result.get('error')}")
+            if result.get("reason"):
+                logger.error(f"Reason: {result.get('reason')}")
             sys.exit(1)
 
     except Exception as e:
@@ -77,7 +83,4 @@ def main():
 
 
 if __name__ == "__main__":
-
-    args = parser.parse_args()
-
-    run_e2e(args.repo, args.issue, args.config)
+    main()

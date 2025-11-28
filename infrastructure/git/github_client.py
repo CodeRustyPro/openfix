@@ -99,7 +99,9 @@ class GitHubClient:
 
         try:
             # Handle trailing slashes and .git suffixes
-            url = repo_url.rstrip("/").replace(".git", "")
+            url = repo_url.rstrip("/")
+            if url.endswith(".git"):
+                url = url[:-4]
             parts = url.split("/")
 
             if len(parts) < 2:

@@ -150,6 +150,16 @@ class PRCreator:
             os.chdir(repo_dir)
             logger.debug(f"Working in {repo_dir}")
 
+            # Configure git user
+            subprocess.run(["git", "config", "user.name", "OpenFix AI"], check=True)
+            subprocess.run(["git", "config", "user.email", "devshah3@illinois.edu"], check=True)
+
+            # Configure remote with token for push
+            token = os.getenv("GITHUB_TOKEN")
+            if token and self.repo_url.startswith("https://"):
+                auth_url = self.repo_url.replace("https://", f"https://x-access-token:{token}@")
+                subprocess.run(["git", "remote", "set-url", "origin", auth_url], check=True)
+
             # Create and checkout new branch
             subprocess.run(
                 ["git", "checkout", "-b", branch_name], check=True, capture_output=True
