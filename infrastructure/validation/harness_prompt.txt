@@ -1,0 +1,55 @@
+SYSTEM:
+You are an expert engineer building secure validation harnesses for AI-generated code patches. Use gemini-2.5-pro. Produce runnable artifacts only; be concise, exact and executable. Do not include any chain-of-thought. Follow all constraints below.
+
+CONTEXT:
+We already have an end-to-end Phase Zero pipeline that:
+- clones a public repo,
+- creates chunked contexts,
+- queries gemini-2.5-pro to generate a unified diff patch,
+- saves artifacts under data/runs/<run_id>/ and data/patches/issue-<n>/fix.patch.
+
+We need a Validation Harness that automatically applies a generated patch in isolation and verifies correctness before a PR is opened.
+
+GOAL:
+Produce a complete, copy-paste ready validation harness that:
+1) is Docker-based and hermetic (network egress blocked by default, allowlist for package registries optional),
+2) applies a unified diff patch to a checked out repo,
+3) detects the project's test command(s) automatically (npm test, pytest, pytest -k, etc.) and runs only the tests relevant to modified files plus a small regression set,
+4) runs linters and static analyzers appropriate to the repo language (eslint for JS/TS, flake8/mypy for Python), 
+5) captures test and linter outputs and returns a single JSON report with fields: run_id, task_id, applied_patch_path, apply_result, tests_run[], tests_passed, tests_failed, linter_issues, stdout_log_path, stderr_log_path, elapsed_seconds, confidence_score, verdict ("pass"|"fail"|"inconclusive"),
+6) computes a confidence_score (0-100) using a clear algorithm combining test pass rate, linter pass rate, and presence of new imports or changed public signatures,
+7) enforces timeouts and resource limits (default 120s per test suite run, 2 CPU, 2GB RAM) and kills runaway processes,
+8) retries flaky tests up to 2 times if they are non-deterministic and marks flakiness in the report,
+9) supports fallback path: if full local reproduction is impossible, create a draft PR comment template explaining why and including the patch and artifacts,
+10) integrates with current artifact layout: expects repo at /workspace/repo, patch at /workspace/ai.patch, and writes outputs under /workspace/data/runs/<run_id>/validation.json and logs.
+
+REQUIREMENTS FOR OUTPUT:
+Produce only the following files/content as plain text in this order, each section separated by a clear header line like "### FILE: <path>".
+1) Dockerfile for the sandbox image with network disabled by default and common tools installed (git, bash, node, python, curl, jq).
+2) An executable shell script `validate_patch.sh` that will be the harness entrypoint. It must:
+   - parse CLI args: `./validate_patch.sh --run-id <run_id> --task-id <task_id> --repo-dir /workspace/repo --patch /workspace/ai.patch`
+   - create a working branch, apply the patch safely and capture apply failures,
+   - detect language and test command(s),
+   - compute blast radius (list of test files to run) using heuristic: tests that import or reference changed modules or tests with filenames matching modified file names,
+   - run linters and tests, collecting logs into data/runs/<run_id>/,
+   - produce validation.json matching the schema described above,
+   - exit with 0 only if verdict is "pass".
+3) A small Python helper `report_confidence.py` that takes raw results and computes the confidence_score with the stated algorithm.
+4) A JSON schema example `validation_schema.json`.
+5) Example commands to build the Docker image and run the harness on a local run_id.
+6) A brief list (5-8 bullets) of the exact failure modes the harness will detect and how it reports them.
+
+CONSTRAINTS:
+- Use POSIX shell and portable Python 3.10+ for helpers.
+- Do not rely on external network unless explicitly allowed by a flag `--allow-network`. If allow-network is set, the harness must record which hosts it contacted and log them.
+- Use explicit, small timeouts and resource cgroups via `timeout` and `ulimit` where appropriate.
+- Keep scripts idempotent and safe to run multiple times for the same run_id.
+
+RETURN FORMAT:
+Output the files/contents only as requested, each preceded by a header:
+### FILE: <relative/path>
+<file contents>
+
+Do not include extra commentary outside the files. Make sure scripts are executable and include a short usage header in each script.
+
+END.

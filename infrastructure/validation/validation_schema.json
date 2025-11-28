@@ -1,0 +1,93 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Validation Report",
+    "type": "object",
+    "required": [
+        "run_id",
+        "task_id",
+        "applied_patch_path",
+        "apply_result",
+        "tests_run",
+        "tests_passed",
+        "tests_failed",
+        "linter_issues",
+        "stdout_log_path",
+        "stderr_log_path",
+        "elapsed_seconds",
+        "confidence_score",
+        "verdict"
+    ],
+    "properties": {
+        "run_id": {
+            "type": "string",
+            "description": "Unique run identifier"
+        },
+        "task_id": {
+            "type": "string",
+            "description": "Task identifier"
+        },
+        "applied_patch_path": {
+            "type": "string",
+            "description": "Path to the patch file"
+        },
+        "apply_result": {
+            "type": "string",
+            "enum": [
+                "success",
+                "failed",
+                "unknown"
+            ],
+            "description": "Result of applying the patch"
+        },
+        "tests_run": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "List of tests executed"
+        },
+        "tests_passed": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of passing tests"
+        },
+        "tests_failed": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of failing tests"
+        },
+        "linter_issues": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of linter issues found"
+        },
+        "stdout_log_path": {
+            "type": "string",
+            "description": "Path to stdout log file"
+        },
+        "stderr_log_path": {
+            "type": "string",
+            "description": "Path to stderr log file"
+        },
+        "elapsed_seconds": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Total validation time in seconds"
+        },
+        "confidence_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Confidence score 0-100"
+        },
+        "verdict": {
+            "type": "string",
+            "enum": [
+                "pass",
+                "fail",
+                "inconclusive"
+            ],
+            "description": "Final validation verdict"
+        }
+    }
+}

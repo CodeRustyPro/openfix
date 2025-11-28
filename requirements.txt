@@ -1,0 +1,8 @@
+google-generativeai
+python-dotenv
+termcolor
+PyGithub
+gitpython
+rich
+pyyaml
+sentence-transformers

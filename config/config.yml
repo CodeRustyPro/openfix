@@ -1,0 +1,38 @@
+# OpenFix Configuration
+
+# Repository settings
+repo_url: ""  # Set via CLI argument
+issue_number: null  # Optional: target specific issue
+
+# Chunk selection
+top_k_chunks: 8  # Number of most relevant chunks to select
+chunk_size: 100  # Lines per chunk (small to fit Gemini limits)
+overlap: 10  # Lines of overlap between chunks
+
+# Embedding and LLM
+embedding_model: "all-MiniLM-L6-v2"  # For future vector search
+llm_model: "gemini-2.5-pro"  # 2.5 Pro has proper paid tier quotas
+llm_temperature: 0.3
+llm_max_tokens: 8192
+
+# Validation
+sandbox_command: "local"  # "local" or "docker" (docker deferred to Phase 1)
+run_tests: true
+run_linters: true
+validation_timeout: 600  # seconds
+
+# Rate limiting
+max_llm_calls_per_minute: 2
+
+# Paths
+data_dir: "data"
+patch_dir: "data/patches"
+runs_dir: "data/runs"
+db_path: "data/db/openfix.db"
+
+# Logging
+log_level: "INFO"
+save_artifacts: true  # Save prompts, responses, etc.
+
+# GitHub
+github_token: null  # Set via environment variable GITHUB_TOKEN

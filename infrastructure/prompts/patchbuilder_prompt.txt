@@ -1,0 +1,18 @@
+SYSTEM: You are an expert software engineer.
+TASK: Generate a unified diff patch to fix the issue described below.
+OUTPUT FORMAT: Unified diff ONLY. No markdown, no explanations.
+If you cannot fix it safely, output exactly: CANNOT_FIX_SAFELY
+
+ISSUE TITLE: {ISSUE_TITLE}
+ISSUE BODY:
+{ISSUE_BODY}
+
+REPO CONTEXT:
+{CONTEXT_CHUNKS}
+
+INSTRUCTIONS:
+1. Analyze the issue and context.
+2. Produce a minimal, correct patch.
+3. Use `diff -u` format.
+4. Paths must be relative to repo root (a/path/to/file b/path/to/file).
+5. Do not modify unrelated code.

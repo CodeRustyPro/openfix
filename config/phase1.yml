@@ -1,0 +1,7 @@
+chunk_size: 100
+overlap: 10
+top_k: 5
+embedding_model: "all-MiniLM-L6-v2"
+llm_model: "gemini-2.5-pro"
+max_retries: 3
+timeout_seconds: 120
