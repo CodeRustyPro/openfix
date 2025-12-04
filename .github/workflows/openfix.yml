@@ -26,7 +26,7 @@ on:
   
   # Trigger on schedule (optional - nightly discovery)
   schedule:
-    - cron: '0 2 * * *'  # 2 AM UTC daily
+    # - cron: '0 2 * * *'  # 2 AM UTC daily uncomment this
 
 jobs:
   openfix-automation:
